@@ -1,0 +1,111 @@
+inputs:
+  shipment_file: ../inputs/erzurum-shipments.csv
+  clean_node_file: ../inputs/erzurum-nodes.csv
+  saved_node_input: true
+  saved_node_file: ../outputs/test-yaml-node-save-state.yaml
+
+outputs:
+  output_directory: ../outputs/
+  output_id: test-yaml
+  detailed_reports: true
+  global_compartment_sums: true
+  node_compartment_sums: false
+  infection_events: false
+  node_save_state: true
+  verbosity: 2
+
+general:
+  num_runs: 1
+  start_day: 2191
+  end_day: 2192
+
+burn_in:
+  implement: false
+  duration: 20
+  discard: false
+
+model_options:
+  run_shipments: true
+  maternal_immunity: true
+  declining_carrier_transmission: false
+  implement_force_infections: false
+  forcing_rate: 0.00
+  max_node_infection_duration: 3000
+
+seeds:
+  # these run every simulation unless burn_in is on and the time is in the burn-in period.
+  seed_1: # must be called seed_$number, starting from 1
+    days_in: 0 # how many days after the start day?
+    fixed_seed: false
+    number_random_seeds: 2 # only checked if fixed_seed is false
+    # seed nodes should be specified as character to avoid ambiguity
+    fixed_seed_node: "25-333-14123"
+    serotype: all
+  seed_2:
+    days_in: 200
+    fixed_seed: false
+    number_random_seeds: 2 # only checked if fixed_seed is false
+    # seed nodes should be specified as character to avoid ambiguity
+    fixed_seed_node: "25-333-37435"
+    serotype: all
+
+population_parameters:
+  birth_rate: 0.00004
+  mortality_rate: 0.00004
+
+disease:
+  serotypes:
+    - all
+  all_parameters:
+    maternal_immunity_duration: 120
+    beta: 1.42
+    sigma: 0.66
+    gamma: 0.09
+    immunity_duration: 180
+    mortality: 0.0018
+    transmission: 5.87e-7
+    susceptibility: 1
+    proportion_carriers: 0.0
+    carrier_duration: 365
+    carrier_beta: 0.00266
+  shipments:
+    fomite_transmission_probability: 0.0 # percentage, e.g. 1.0 %
+
+kernel:
+  a: 1.0
+  scale: 1.0
+  shape: 2.0
+
+control_options:
+  days_in_effective_from: 0 # how many days in do the control policies take effect? will be start_day + this.
+  detection:
+    detection_probability: 100
+    detection_delay: 4
+  vaccine:
+    all:
+      efficacy: 71
+      efficacy_stdev: 3
+      duration: 150
+    A:
+      efficacy: 75
+      efficacy_stdev: 3
+      duration: 150
+    Asia-1:
+      efficacy: 75
+      efficacy_stdev: 3
+      duration: 150
+  daily_vaccination_capacity: 1100
+  reactive_vaccination:
+    implement: false
+    radius: 10
+    coverage: 100
+    min_interval: 28
+  mass_vaccination:
+    implement: false
+    interval: 182
+    coverage: 100
+  movement_ban_policy:
+    implement: false
+    radius: 5
+    duration: 7
+    compliance: 100

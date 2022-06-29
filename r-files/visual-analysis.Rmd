@@ -1,0 +1,38 @@
+---
+title: "Results Analysis"
+output: html_notebook
+---
+
+# Preamble
+
+### Load Packages & Define Directoriesß
+```{r}
+packages <- c("tidyverse")
+lapply(packages, FUN = library, character.only = TRUE)
+
+prefix <- "test"
+input_dir <- "../inputs/"
+output_dir <- "../outputs/"
+```
+
+### Load Data
+
+```{r}
+o1 <- read_csv(paste0(output_dir, prefix, "-node-infection-report.csv")) %>%
+  mutate(day = day - max(day))
+o2 <- read_csv(paste0(output_dir, "test-load-save-node-infection-report.csv")) %>%
+  mutate(day = day - min(day))
+```
+
+# Visualise
+
+## Node Infections
+```{r}
+o1 %>% 
+  filter(value_type == "true_prevalence") %>%
+  ggplot(aes(x = day, y = value_sum)) +
+  geom_line() +
+  geom_line(data = o2 %>% filter(value_type == "true_prevalence"))
+```
+
+

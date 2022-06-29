@@ -1,0 +1,6 @@
+[submodule "tests/gtest"]
+	path = tests/gtest
+	url = https://github.com/google/googletest
+[submodule "external/yaml-cpp"]
+	path = external/yaml-cpp
+	url = https://github.com/jbeder/yaml-cpp.git
